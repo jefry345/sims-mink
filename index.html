@@ -55,21 +55,17 @@
         <span id="toastMsg">Notifikasi</span>
     </div>
 
-    <!-- Header App dengan Logo Vektor Terpadu -->
+    <!-- Header App dengan Logo Sekolah -->
     <header class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white shadow-xl sticky top-0 z-40 no-print border-b border-emerald-600/30">
         <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-3.5">
-                <!-- Logo Vektor Islami MI Najmul Khoir (Bintang & Kitab) -->
-                <div class="w-12 h-12 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center p-2 border border-white/20 shadow-inner group transition-transform hover:scale-105">
-                    <svg class="w-full h-full text-amber-300 drop-shadow-md" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Shield Badge Background -->
-                        <path d="M50 5 L85 20 V50 C85 72 70 90 50 96 C30 90 15 72 15 50 V20 L50 5 Z" fill="#047857" stroke="#F59E0B" stroke-width="4"/>
-                        <!-- Star / Bintang Najmul -->
-                        <polygon points="50,18 54,28 65,28 56,35 60,46 50,39 40,46 44,35 35,28 46,28" fill="#FBBF24"/>
-                        <!-- Open Book / Quran -->
-                        <path d="M30 65 Q50 58 50 75 Q50 58 70 65 V55 Q50 48 50 63 Q50 48 30 55 Z" fill="#FFFFFF"/>
-                        <circle cx="50" cy="80" r="3" fill="#FBBF24"/>
-                    </svg>
+                <!-- Wrapper Logo Gambar Langsung -->
+                <div class="relative w-12 h-12 flex items-center justify-center shrink-0">
+                    <img id="schoolLogoImg" 
+                         src="logo.png.png?v=100" 
+                         onerror="this.onerror=null; this.src='https://jefry345.github.io/sims-mink/logo.png.png?v=' + Date.now();" 
+                         class="w-12 h-12 rounded-2xl object-contain bg-white/95 p-1 border border-white/30 shadow-md transition-transform hover:scale-105" 
+                         alt="Logo MI Najmul Khoir">
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
