@@ -328,18 +328,19 @@
             }
         }
 
-        function setStudentStatus(studentId, status) {
-            const date = document.getElementById('inputDate').value;
-            const storageKey = `mnk_att_${date}__${activeClass}`;
-            const attRecords = JSON.parse(localStorage.getItem(storageKey)) || {};
+function loadAttendanceData() {
+   ...
+}
 
-            if (!attRecords[studentId]) attRecords[studentId] = {};
-            attRecords[studentId].status = status;
 
-            localStorage.setItem(storageKey, JSON.stringify(attRecords));
-            loadAttendanceData();
-        }
+async function setStudentStatus(studentId, status) {
+   ...
+}
 
+
+function setStudentNote(studentId, note) {
+   ...
+}
         function setStudentNote(studentId, note) {
             const date = document.getElementById('inputDate').value;
             const storageKey = `mnk_att_${date}__${activeClass}`;
