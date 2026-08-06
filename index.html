@@ -275,10 +275,38 @@
             document.getElementById('recapSubTitle').innerText = `MI NAJMUL KHOIR - ${formatClassLabel(activeClass).toUpperCase()}`;
         }
 
-        function loadAttendanceData() {
-            const date = document.getElementById('inputDate').value;
-            const storageKey = `mnk_att_${date}__${activeClass}`;
-            const attRecords = JSON.parse(localStorage.getItem(storageKey)) || {};
+        async function loadAttendanceData() {
+           const date = document.getElementById('inputDate').value;
+
+let attRecords = {};
+
+try {
+
+    const response = await fetch(API_URL);
+
+    const data = await response.json();
+
+    data.slice(1).forEach(row => {
+
+        if (
+            row[0] === date &&
+            row[1] === activeClass
+        ) {
+
+            attRecords[row[2]] = {
+                status: row[5],
+                note: row[6]
+            };
+
+        }
+
+    });
+
+} catch (error) {
+
+    console.error(error);
+
+}
 
             const studentList = masterStudents[activeClass] || [];
             document.getElementById('lblStudentCount').innerText = `${studentList.length} Siswa`;
