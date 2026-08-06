@@ -213,10 +213,14 @@
 
     <!-- JavaScript Script -->
     <script>
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyCzUJtwlXRmI-zIW6nMBcJEZODf227jOVn9qTr4zXykEnauaw3hBIL9nAhlJMB9Uza1g/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxq93zI5WIB63pLhpyRrptue53mK-Thx97B68gYrMc9KrASScmutQ-wLO1Dle4-LZ3F7A/exec";
 
-        let masterStudents = { '1a': [] };
-        let allClasses = ['1a'];
+        // Daftar kelas lengkap standar
+        let allClasses = ['1a', '1b', '2a', '2b', '3a', '3b', '4a', '4b', '5a', '5b', '6a', '6b'];
+        let masterStudents = {
+            '1a': [], '1b': [], '2a': [], '2b': [], '3a': [], '3b': [],
+            '4a': [], '4b': [], '5a': [], '5b': [], '6a': [], '6b': []
+        };
         let activeClass = '1a';
         let currentView = 'daily';
 
@@ -254,22 +258,22 @@
                 let data = await response.json();
                 
                 if (Array.isArray(data) && data.length > 0) {
-                    let parsed = {};
+                    // Reset data master lokal per kelas
+                    allClasses.forEach(cls => masterStudents[cls] = []);
+
                     data.forEach(item => {
                         if (!item.kelas) return;
                         let cls = String(item.kelas).toLowerCase().replace(/\s+/g, '');
-                        if (!parsed[cls]) parsed[cls] = [];
-                        parsed[cls].push({
+                        if (!masterStudents[cls]) {
+                            masterStudents[cls] = [];
+                            if (!allClasses.includes(cls)) allClasses.push(cls);
+                        }
+                        masterStudents[cls].push({
                             nomor: item.nomor || 1,
                             nama: item.nama || '',
                             kelas: item.kelas
                         });
                     });
-
-                    if (Object.keys(parsed).length > 0) {
-                        masterStudents = parsed;
-                        allClasses = Object.keys(masterStudents);
-                    }
                 }
             } catch (err) {
                 console.warn("Gagal mengambil dari Google Sheets:", err);
@@ -286,8 +290,7 @@
         function renderClassTabs() {
             const container = document.getElementById('classListContainer');
             container.innerHTML = '';
-            if (!allClasses || allClasses.length === 0) allClasses = ['1a'];
-
+            
             allClasses.forEach(cls => {
                 let btn = document.createElement('button');
                 let isActive = cls === activeClass;
