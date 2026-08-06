@@ -159,7 +159,7 @@
                     <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
                         <h3 class="font-black text-sm text-slate-700 flex items-center gap-2">
                             <i class="fa-solid fa-users text-emerald-600"></i>
-                            <span>Daftar Siswa - <span id="lblActiveClassTitle" class="text-emerald-700 uppercase">Kelas 1 A</span></span>
+                            <span>Daftar Siswa - <span id="lblActiveClassTitle" class="text-emerald-700 uppercase">Kelas 1A</span></span>
                         </h3>
                         <span id="lblStudentCount" class="text-xs font-bold bg-slate-200 text-slate-600 px-3 py-1 rounded-lg">0 Siswa</span>
                     </div>
@@ -215,11 +215,10 @@
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxq93zI5WIB63pLhpyRrptue53mK-Thx97B68gYrMc9KrASScmutQ-wLO1Dle4-LZ3F7A/exec";
 
-        // Daftar kelas lengkap standar
-        let allClasses = ['1a', '1b', '2a', '2b', '3a', '3b', '4a', '4b', '5a', '5b', '6a', '6b'];
+        // Daftar kelas yang benar sesuai madrasah: 1A, 1B, 2, 3, 4, 5, 6
+        let allClasses = ['1a', '1b', '2', '3', '4', '5', '6'];
         let masterStudents = {
-            '1a': [], '1b': [], '2a': [], '2b': [], '3a': [], '3b': [],
-            '4a': [], '4b': [], '5a': [], '5b': [], '6a': [], '6b': []
+            '1a': [], '1b': [], '2': [], '3': [], '4': [], '5': [], '6': []
         };
         let activeClass = '1a';
         let currentView = 'daily';
@@ -294,12 +293,13 @@
             allClasses.forEach(cls => {
                 let btn = document.createElement('button');
                 let isActive = cls === activeClass;
+                let labelName = cls.length === 1 ? `Kelas ${cls.toUpperCase()}` : `Kelas ${cls.toUpperCase()}`;
                 btn.className = `px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all whitespace-nowrap ${isActive ? 'bg-emerald-600 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`;
-                btn.innerText = `Kelas ${cls.toUpperCase()}`;
+                btn.innerText = labelName;
                 btn.onclick = () => { activeClass = cls; renderClassTabs(); loadAttendanceData(); };
                 container.appendChild(btn);
             });
-            document.getElementById('lblActiveClassTitle').innerText = `Kelas ${activeClass.toUpperCase()}`;
+            document.getElementById('lblActiveClassTitle').innerText = activeClass.length === 1 ? `Kelas ${activeClass.toUpperCase()}` : `Kelas ${activeClass.toUpperCase()}`;
         }
 
         function loadAttendanceData() {
@@ -365,7 +365,7 @@
             let nama = prompt("Masukkan Nama Lengkap Siswa:");
             if (!nama) return;
             let nomor = prompt("Masukkan Nomor Urut Siswa:") || "1";
-            let kelasInput = prompt("Masukkan Kelas (Contoh: 1A, 2B):", activeClass.toUpperCase());
+            let kelasInput = prompt("Masukkan Kelas (Contoh: 1A, 1B, 2, 3, 4, 5, 6):", activeClass.toUpperCase());
             if (!kelasInput) return;
 
             showToast("Menyimpan ke Google Sheets...");
