@@ -5,45 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIMS & Absensi Digital - MI Najmul Khoir</title>
     
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Plus Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc;
-            color: #1e293b;
-        }
-        ::-webkit-scrollbar {
-            height: 6px;
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white !important; }
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        ::-webkit-scrollbar { height: 6px; width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        @media print { .no-print { display: none !important; } body { background: white !important; } }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Toast Notification -->
     <div id="toast" class="fixed top-5 right-5 z-[9999] hidden items-center gap-3 px-5 py-3.5 bg-slate-900 text-white rounded-2xl shadow-2xl font-medium text-sm border border-emerald-500/30 transition-all">
         <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
         <span id="toastMsg">Notifikasi</span>
     </div>
 
-    <!-- Halaman Login -->
     <div id="loginPage" class="fixed inset-0 z-50 bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md p-8 rounded-3xl shadow-2xl border border-emerald-500/20 space-y-6">
             <div class="text-center space-y-2">
@@ -58,9 +38,7 @@
                 <div>
                     <label class="block text-xs font-extrabold text-slate-600 uppercase mb-1.5">Username / ID Pengajar</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                            <i class="fa-solid fa-user"></i>
-                        </span>
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fa-solid fa-user"></i></span>
                         <input type="text" id="loginUser" required placeholder="Masukkan username..." class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-600">
                     </div>
                 </div>
@@ -68,9 +46,7 @@
                 <div>
                     <label class="block text-xs font-extrabold text-slate-600 uppercase mb-1.5">Password</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                            <i class="fa-solid fa-lock"></i>
-                        </span>
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fa-solid fa-lock"></i></span>
                         <input type="password" id="loginPass" required placeholder="Masukkan password..." class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-600">
                     </div>
                 </div>
@@ -79,15 +55,11 @@
                     Masuk Aplikasi
                 </button>
             </form>
-            <div class="text-center text-[10px] text-slate-400 font-bold">
-                &copy; 2026 MI Najmul Khoir &bull; Secure Portal
-            </div>
+            <div class="text-center text-[10px] text-slate-400 font-bold">&copy; 2026 MI Najmul Khoir &bull; Secure Portal</div>
         </div>
     </div>
 
-    <!-- Main App Container -->
     <div id="appContainer" class="hidden flex-1 flex flex-col">
-        <!-- Header -->
         <header class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white shadow-xl sticky top-0 z-40 no-print border-b border-emerald-600/30">
             <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-3">
                 <div class="flex items-center gap-3.5">
@@ -111,10 +83,8 @@
             </div>
         </header>
 
-        <!-- Main Content -->
         <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 sm:px-6 lg:px-8 space-y-6">
 
-            <!-- Navigation & Classes -->
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4 no-print">
                 <div class="flex flex-col gap-1.5 w-full md:w-auto">
                     <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -133,7 +103,6 @@
                 </div>
             </div>
 
-            <!-- Daily View -->
             <div id="viewDaily" class="space-y-6">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4 no-print">
                     <div class="flex items-center gap-3 w-full sm:w-auto">
@@ -154,7 +123,6 @@
                     </div>
                 </div>
 
-                <!-- Table -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                     <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
                         <h3 class="font-black text-sm text-slate-700 flex items-center gap-2">
@@ -181,7 +149,6 @@
                 </div>
             </div>
 
-            <!-- Recap View -->
             <div id="viewRecap" style="display:none;" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-5">
                 <div class="flex justify-between items-center pb-4 border-b border-slate-200">
                     <div>
@@ -211,15 +178,11 @@
         </main>
     </div>
 
-    <!-- JavaScript Script -->
     <script>
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxq93zI5WIB63pLhpyRrptue53mK-Thx97B68gYrMc9KrASScmutQ-wLO1Dle4-LZ3F7A/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8t_IR-YPMkBfduG0efMD3zOiQMRXQLx8N3_Bd5SSN61l8SND6-OooeleFIE4CUEho9g/exec";
 
-        // Daftar kelas yang benar sesuai madrasah: 1A, 1B, 2, 3, 4, 5, 6
         let allClasses = ['1a', '1b', '2', '3', '4', '5', '6'];
-        let masterStudents = {
-            '1a': [], '1b': [], '2': [], '3': [], '4': [], '5': [], '6': []
-        };
+        let masterStudents = { '1a': [], '1b': [], '2': [], '3': [], '4': [], '5': [], '6': [] };
         let activeClass = '1a';
         let currentView = 'daily';
 
@@ -257,9 +220,7 @@
                 let data = await response.json();
                 
                 if (Array.isArray(data) && data.length > 0) {
-                    // Reset data master lokal per kelas
                     allClasses.forEach(cls => masterStudents[cls] = []);
-
                     data.forEach(item => {
                         if (!item.kelas) return;
                         let cls = String(item.kelas).toLowerCase().replace(/\s+/g, '');
@@ -274,8 +235,35 @@
                         });
                     });
                 }
+                
+                let attRes = await fetch(`${APPS_SCRIPT_URL}?action=get_attendance`);
+                let attList = await attRes.json();
+                if (Array.isArray(attList)) {
+                    let groupedAtt = {};
+                    attList.forEach(row => {
+                        let rowDate = row.tanggal ? String(row.tanggal).split('T')[0] : '';
+                        let rowKelas = row.kelas ? String(row.kelas).toLowerCase().replace(/\s+/g, '') : '';
+                        let key = `mnk_att_${rowDate}__${rowKelas}`;
+                        
+                        if (!groupedAtt[key]) groupedAtt[key] = {};
+                        
+                        let sList = masterStudents[rowKelas] || [];
+                        let sIdx = sList.findIndex(s => String(s.nama).toLowerCase() === String(row.namasiswa).toLowerCase());
+                        
+                        if (sIdx !== -1) {
+                            groupedAtt[key][sIdx] = {
+                                status: row.status || 'Hadir',
+                                note: row.keterangan || ''
+                            };
+                        }
+                    });
+                    
+                    for (let k in groupedAtt) {
+                        localStorage.setItem(k, JSON.stringify(groupedAtt[k]));
+                    }
+                }
             } catch (err) {
-                console.warn("Gagal mengambil dari Google Sheets:", err);
+                console.warn("Gagal sinkron:", err);
             }
 
             if (!allClasses.includes(activeClass)) {
@@ -293,13 +281,12 @@
             allClasses.forEach(cls => {
                 let btn = document.createElement('button');
                 let isActive = cls === activeClass;
-                let labelName = cls.length === 1 ? `Kelas ${cls.toUpperCase()}` : `Kelas ${cls.toUpperCase()}`;
                 btn.className = `px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all whitespace-nowrap ${isActive ? 'bg-emerald-600 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`;
-                btn.innerText = labelName;
+                btn.innerText = `Kelas ${cls.toUpperCase()}`;
                 btn.onclick = () => { activeClass = cls; renderClassTabs(); loadAttendanceData(); };
                 container.appendChild(btn);
             });
-            document.getElementById('lblActiveClassTitle').innerText = activeClass.length === 1 ? `Kelas ${activeClass.toUpperCase()}` : `Kelas ${activeClass.toUpperCase()}`;
+            document.getElementById('lblActiveClassTitle').innerText = `Kelas ${activeClass.toUpperCase()}`;
         }
 
         function loadAttendanceData() {
@@ -350,6 +337,7 @@
             att[idx].status = status;
             localStorage.setItem(key, JSON.stringify(att));
             loadAttendanceData();
+            syncAttendanceToCloud();
         }
 
         function setNote(idx, note) {
@@ -359,6 +347,55 @@
             if (!att[idx]) att[idx] = {};
             att[idx].note = note;
             localStorage.setItem(key, JSON.stringify(att));
+            syncAttendanceToCloud();
+        }
+
+        function markAllStatus(status) {
+            const date = document.getElementById('inputDate').value;
+            let key = `mnk_att_${date}__${activeClass}`;
+            let att = JSON.parse(localStorage.getItem(key)) || {};
+            const studentList = masterStudents[activeClass] || [];
+            
+            studentList.forEach((st, idx) => {
+                if (!att[idx]) att[idx] = {};
+                att[idx].status = status;
+                if (!att[idx].note) att[idx].note = '';
+            });
+            localStorage.setItem(key, JSON.stringify(att));
+            loadAttendanceData();
+            syncAttendanceToCloud();
+            showToast(`Semua diset ${status}!`);
+        }
+
+        async function syncAttendanceToCloud() {
+            const date = document.getElementById('inputDate').value;
+            let key = `mnk_att_${date}__${activeClass}`;
+            let attRecords = JSON.parse(localStorage.getItem(key)) || {};
+            let studentList = masterStudents[activeClass] || [];
+
+            let recordsPayload = {};
+            studentList.forEach((st, idx) => {
+                recordsPayload[idx] = {
+                    nomor: st.nomor || (idx + 1),
+                    nama: st.nama,
+                    status: attRecords[idx] ? attRecords[idx].status : 'Hadir',
+                    note: attRecords[idx] ? attRecords[idx].note : ''
+                };
+            });
+
+            try {
+                await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'save_attendance',
+                        tanggal: date,
+                        kelas: activeClass,
+                        records: recordsPayload
+                    })
+                });
+            } catch(err) {
+                console.warn("Gagal simpan cloud:", err);
+            }
         }
 
         async function openAddStudentModal() {
