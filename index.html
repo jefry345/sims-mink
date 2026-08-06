@@ -213,11 +213,10 @@
 
     <!-- JavaScript Script -->
     <script>
-        // URL Web App Google Sheets Anda sudah terhubung otomatis
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyCzUJtwlXRmI-zIW6nMBcJEZODf227jOVn9qTr4zXykEnauaw3hBIL9nAhlJMB9Uza1g/exec";
 
-        let masterStudents = {};
-        let allClasses = [];
+        let masterStudents = { '1a': [] };
+        let allClasses = ['1a'];
         let activeClass = '1a';
         let currentView = 'daily';
 
@@ -254,48 +253,40 @@
                 let response = await fetch(APPS_SCRIPT_URL);
                 let data = await response.json();
                 
-                let parsed = {};
-                data.forEach(item => {
-                    let cls = String(item.kelas).toLowerCase().replace(/\s+/g, '');
-                    if (!parsed[cls]) parsed[cls] = [];
-                    parsed[cls].push({
-                        nomor: item.nomor,
-                        nama: item.nama,
-                        kelas: item.kelas
+                if (Array.isArray(data) && data.length > 0) {
+                    let parsed = {};
+                    data.forEach(item => {
+                        if (!item.kelas) return;
+                        let cls = String(item.kelas).toLowerCase().replace(/\s+/g, '');
+                        if (!parsed[cls]) parsed[cls] = [];
+                        parsed[cls].push({
+                            nomor: item.nomor || 1,
+                            nama: item.nama || '',
+                            kelas: item.kelas
+                        });
                     });
-                });
 
-                if (Object.keys(parsed).length > 0) {
-                    masterStudents = parsed;
-                    allClasses = Object.keys(masterStudents);
-                    if (!allClasses.includes(activeClass)) activeClass = allClasses[0];
-                    localStorage.setItem('mnk_master_students', JSON.stringify(masterStudents));
-                    showToast("Data berhasil dimuat dari Sheets!");
-                } else {
-                    showToast("Sheets masih kosong. Silakan tambah siswa.", "info");
-                    masterStudents = { '1a': [] };
-                    allClasses = ['1a'];
+                    if (Object.keys(parsed).length > 0) {
+                        masterStudents = parsed;
+                        allClasses = Object.keys(masterStudents);
+                    }
                 }
             } catch (err) {
-                console.warn("Gagal mengambil dari Google Sheets, menggunakan data lokal.");
-                loadLocalFallback();
+                console.warn("Gagal mengambil dari Google Sheets:", err);
+            }
+
+            if (!allClasses.includes(activeClass)) {
+                activeClass = allClasses[0] || '1a';
             }
             renderClassTabs();
             loadAttendanceData();
-        }
-
-        function loadLocalFallback() {
-            masterStudents = JSON.parse(localStorage.getItem('mnk_master_students')) || {
-                '1a': []
-            };
-            allClasses = Object.keys(masterStudents);
-            if (!allClasses.includes(activeClass)) activeClass = allClasses[0];
+            showToast("Sinkronisasi Selesai!");
         }
 
         function renderClassTabs() {
             const container = document.getElementById('classListContainer');
             container.innerHTML = '';
-            if (allClasses.length === 0) allClasses = ['1a'];
+            if (!allClasses || allClasses.length === 0) allClasses = ['1a'];
 
             allClasses.forEach(cls => {
                 let btn = document.createElement('button');
@@ -381,7 +372,7 @@
                     body: JSON.stringify({ action: 'add', nomor: nomor, nama: nama, kelas: kelasInput })
                 });
                 showToast("Siswa berhasil masuk Google Sheets!");
-                setTimeout(() => fetchDataFromGoogleSheets(), 1000);
+                setTimeout(() => fetchDataFromGoogleSheets(), 1500);
             } catch(err) {
                 showToast("Gagal menyimpan ke server.", "error");
             }
@@ -397,7 +388,7 @@
                     body: JSON.stringify({ action: 'delete', nama: nama, kelas: kelas })
                 });
                 showToast("Siswa berhasil dihapus!");
-                setTimeout(() => fetchDataFromGoogleSheets(), 1000);
+                setTimeout(() => fetchDataFromGoogleSheets(), 1500);
             } catch(err) {
                 showToast("Gagal menghapus.", "error");
             }
