@@ -69,7 +69,7 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <h1 class="text-xl font-black tracking-wider leading-none uppercase text-amber-300">MI NAJMUL KHOIR</h1>
-                            <span class="bg-amber-400/20 text-amber-300 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-amber-300/30">REAL-TIME SYNC</span>
+                            <span class="bg-amber-400/20 text-amber-300 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-amber-300/30">LIVE SYNC v2</span>
                         </div>
                         <p class="text-xs text-emerald-100 font-semibold mt-0.5">Sistem Informasi Manajemen & Presensi Digital</p>
                     </div>
@@ -212,16 +212,16 @@
             document.getElementById('inputDate').value = new Date().toISOString().split('T')[0];
             await fetchDataFromGoogleSheets();
             
-            // Auto sync data absensi dari cloud setiap 6 detik secara senyap
+            // Auto sync data absensi dari cloud setiap 4 detik dengan anti-cache timestamp
             setInterval(async () => {
                 await backgroundSyncAttendance();
-            }, 6000);
+            }, 4000);
         }
 
         async function fetchDataFromGoogleSheets() {
             showToast("Menghubungkan ke Google Sheets...");
             try {
-                let response = await fetch(APPS_SCRIPT_URL);
+                let response = await fetch(`${APPS_SCRIPT_URL}?t=${Date.now()}`);
                 let data = await response.json();
                 
                 if (Array.isArray(data) && data.length > 0) {
@@ -256,7 +256,7 @@
 
         async function backgroundSyncAttendance() {
             try {
-                let attRes = await fetch(`${APPS_SCRIPT_URL}?action=get_attendance`);
+                let attRes = await fetch(`${APPS_SCRIPT_URL}?action=get_attendance&t=${Date.now()}`);
                 let attList = await attRes.json();
                 if (Array.isArray(attList)) {
                     let groupedAtt = {};
@@ -281,7 +281,7 @@
                     for (let k in groupedAtt) {
                         localStorage.setItem(k, JSON.stringify(groupedAtt[k]));
                     }
-                    loadAttendanceData(); // Refresh tampilan tabel secara otomatis
+                    loadAttendanceData(); // Refresh tabel otomatis tanpa reload halaman
                 }
             } catch(e) {
                 // Background sync silent fail
