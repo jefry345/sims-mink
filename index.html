@@ -69,7 +69,7 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <h1 class="text-xl font-black tracking-wider leading-none uppercase text-amber-300">MI NAJMUL KHOIR</h1>
-                            <span class="bg-amber-400/20 text-amber-300 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-amber-300/30">LIVE SHEETS</span>
+                            <span class="bg-amber-400/20 text-amber-300 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-amber-300/30">REAL-TIME SYNC</span>
                         </div>
                         <p class="text-xs text-emerald-100 font-semibold mt-0.5">Sistem Informasi Manajemen & Presensi Digital</p>
                     </div>
@@ -112,7 +112,7 @@
 
                     <div class="flex items-center gap-2 w-full sm:w-auto justify-end flex-wrap">
                         <button onclick="fetchDataFromGoogleSheets()" class="px-3.5 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5">
-                            <i class="fa-solid fa-sync"></i> Sinkron Google Sheets
+                            <i class="fa-solid fa-sync"></i> Sinkron Sekarang
                         </button>
                         <button onclick="markAllStatus('Hadir')" class="px-3.5 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5">
                             <i class="fa-solid fa-check-double"></i> Semua Hadir
@@ -211,6 +211,11 @@
         async function initializeApp() {
             document.getElementById('inputDate').value = new Date().toISOString().split('T')[0];
             await fetchDataFromGoogleSheets();
+            
+            // Auto sync data absensi dari cloud setiap 6 detik secara senyap
+            setInterval(async () => {
+                await backgroundSyncAttendance();
+            }, 6000);
         }
 
         async function fetchDataFromGoogleSheets() {
@@ -236,6 +241,21 @@
                     });
                 }
                 
+                await backgroundSyncAttendance();
+            } catch (err) {
+                console.warn("Gagal sinkron:", err);
+            }
+
+            if (!allClasses.includes(activeClass)) {
+                activeClass = allClasses[0] || '1a';
+            }
+            renderClassTabs();
+            loadAttendanceData();
+            showToast("Sinkronisasi Selesai!");
+        }
+
+        async function backgroundSyncAttendance() {
+            try {
                 let attRes = await fetch(`${APPS_SCRIPT_URL}?action=get_attendance`);
                 let attList = await attRes.json();
                 if (Array.isArray(attList)) {
@@ -261,17 +281,11 @@
                     for (let k in groupedAtt) {
                         localStorage.setItem(k, JSON.stringify(groupedAtt[k]));
                     }
+                    loadAttendanceData(); // Refresh tampilan tabel secara otomatis
                 }
-            } catch (err) {
-                console.warn("Gagal sinkron:", err);
+            } catch(e) {
+                // Background sync silent fail
             }
-
-            if (!allClasses.includes(activeClass)) {
-                activeClass = allClasses[0] || '1a';
-            }
-            renderClassTabs();
-            loadAttendanceData();
-            showToast("Sinkronisasi Selesai!");
         }
 
         function renderClassTabs() {
